@@ -20,11 +20,11 @@ class SpeechRecognition:
         self.CHUNK = 1024
         self.AUDIO_FORMAT = pyaudio.paInt16
         self.CHANNELS = 1
-        self.FRAME_RATE = 16000
-        self.RECORD_SECONDS = 5
+        self.FRAME_RATE = 48000
+        self.RECORD_SECONDS = 5  # Продолжительность записи аудиопотока
 
-        self.input_device_index = 0
-        self.output_device_index = 2
+        self.input_device_index = 0  # Запустить SpeechRecognition.get_devices("Input") и выбрать индекс устройства для ввода
+        self.output_device_index = 2  # Запустить SpeechRecognition.get_devices("Output") и выбрать индекс устройства для вывода
         self.messages = Queue()
         self.recordings = Queue()
         self.model = Model(model_path="./lib/vosk-model-small-ru-0.22")
@@ -118,7 +118,7 @@ class SpeechRecognition:
             rec.AcceptWaveform(b"".join(frames))
             result = rec.Result()
             text = json.loads(result)["text"]
-            # text = self.__set_punctuation(text)
+            # text = self.__set_punctuation(text) # Пока не требуется
             # Сюда можно встроить модуль прогнозарования следующих слов/предложений
             if len(text) > 0:
                 tts = gTTS(text=self.translate(text), lang="en")
